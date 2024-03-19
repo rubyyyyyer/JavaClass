@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myapplication2'
+    namespace 'com.example.javaclass'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.myapplication2"
+        applicationId "com.example.javaclass"
         minSdk 31
         targetSdk 34
         versionCode 1
