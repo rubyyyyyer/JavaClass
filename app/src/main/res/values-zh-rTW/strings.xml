@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Java Class</string>
+    <string name="hello">嗨</string>
+    <string name="bmi">身體質量指數</string>
+    <string name="close">關閉</string>
+    <string name="height">身高</string>
+    <string name="weight">體重</string>
+    <string name="calculate_bmi">計算BMI</string>
+    <string name="infomation">說明</string>
+    <string name="calculate_bmi_result">計算BMI結果</string>
+    <string name="bmi_info">身體質量指數，是身高與體重的比值，BMI 主要用來評估你現在的體重屬於正常、過輕或肥胖。</string>
+</resources>
