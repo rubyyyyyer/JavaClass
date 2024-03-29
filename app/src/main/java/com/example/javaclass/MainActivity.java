@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity","BMI:" + bmi);
         Toast.makeText(this,"Calculate BMI Result："+bmi,Toast.LENGTH_LONG).show();
 
-        new AlertDialog.Builder(this)
+/*        new AlertDialog.Builder(this)
                 .setTitle("BMI")
                 .setMessage(""+bmi)
                 .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -62,7 +63,13 @@ public class MainActivity extends AppCompatActivity {
                         inputWeight.setText("");
                     }
                 })
-                .show();
+                .show();*/
+
+        Intent intent = new Intent(this, bmiResultActivity.class);
+
+        intent.putExtra("BMI",bmi);
+
+        startActivity(intent);
 
         result_bmi.setText(""+bmi);
     }
