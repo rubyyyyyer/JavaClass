@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("BMI")
-                        .setMessage("Body Mass Index (BMI) is a person's weight in kilograms divided by the square of height in meters. A high BMI can indicate high body fatness. BMI screens for weight categories that may lead to health problems, but it does not diagnose the body fatness or health of an individual.")
-                        .setPositiveButton("Close",null)
+                        .setTitle(R.string.bmi)
+                        .setMessage(R.string.bmi_info)
+                        .setPositiveButton(R.string.close,null)
                         .show();
             }
         });
@@ -42,17 +43,17 @@ public class MainActivity extends AppCompatActivity {
     public void bmi(View view){
         String input_Hs = inputHeight.getText().toString();
         String input_Ws = inputWeight.getText().toString();
-        float input_Hf = Float.valueOf(input_Hs);
-        float input_Wf = Float.valueOf(input_Ws);
+        float input_Hf = Float.parseFloat(input_Hs);
+        float input_Wf = Float.parseFloat(input_Ws);
 
         float bmi = input_Wf / (input_Hf*input_Hf);
-        Toast.makeText(this,"BMI"+bmi,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,getString(R.string.bmi)+bmi,Toast.LENGTH_LONG).show();
         resultBmi.setText(""+bmi);
 
-        new AlertDialog.Builder(this)
-                .setTitle("BMI")
+        /*new AlertDialog.Builder(this)
+                .setTitle(R.string.bmi)
                 .setMessage(""+bmi)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         inputHeight.setText("");
@@ -61,7 +62,17 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .show();
+                .show();*/
+
+        Intent intentToShowBMI = new Intent(this, ShowBMI.class);
+        intentToShowBMI.putExtra("BMI",bmi);
+        startActivity(intentToShowBMI);
+
+
+
+
+
+
 
     }
 }

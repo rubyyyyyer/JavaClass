@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Java Class</string>
+    <string name="bmi">BMI</string>
+    <string name="bmi_info">Body Mass Index (BMI) is a person\'s weight in kilograms divided by the square of height in meters. A high BMI can indicate high body fatness. BMI screens for weight categories that may lead to health problems, but it does not diagnose the body fatness or health of an individual.</string>
+    <string name="close">Close</string>
+    <string name="ok">OK</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="calculate_bmi">Calculate BMI</string>
+    <string name="infomation">Infomation</string>
+    <string name="calculate_bmi_result">Calculate BMI Result：</string>
 </resources>
