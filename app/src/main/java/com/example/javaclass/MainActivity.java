@@ -1,11 +1,13 @@
 package com.example.javaclass;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //search:FadeMove
+        Log.d(TAG, "onCreate: ");
         setContentView(R.layout.activity_main);
         inputHeight = findViewById(R.id.input_height);
         inputWeight = findViewById(R.id.input_weight);
@@ -36,8 +40,45 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
 
 
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
     }
 
     public void bmi(View view){
@@ -48,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         float bmi = input_Wf / (input_Hf*input_Hf);
         Toast.makeText(this,getString(R.string.bmi)+bmi,Toast.LENGTH_LONG).show();
-        resultBmi.setText(""+bmi);
+//        resultBmi.setText(""+bmi);
+        resultBmi.setText(String.format("%s", bmi));
 
         /*new AlertDialog.Builder(this)
                 .setTitle(R.string.bmi)

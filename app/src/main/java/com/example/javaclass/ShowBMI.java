@@ -11,8 +11,9 @@ public class ShowBMI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_bmi);
-        TextView showBMI = findViewById(R.id.show_bmi);
+        TextView showBMI = findViewById(R.id.result_bmi);
         float bmi = getIntent().getFloatExtra("BMI",0);
-        showBMI.setText(""+bmi);
+//        showBMI.setText(String.format("%s", bmi));
+        showBMI.setText("" + bmi);
     }
 }
