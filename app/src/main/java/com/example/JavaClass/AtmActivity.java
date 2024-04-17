@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +27,7 @@ public class AtmActivity extends AppCompatActivity {
     Boolean logon = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityAtmBinding binding;
+    private ActivityResultLauncher<Intent> intentActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,23 @@ public class AtmActivity extends AppCompatActivity {
 
         if (!logon){
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent,REQUEST_LOGIN);
+            intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    System.out.println("我有來1 " + result.getResultCode());
+                    if(result.getResultCode() ==RESULT_OK) {
+//                        result.getData().getStringExtra();
+                        System.out.println("我有來2 " + result.getResultCode());
+//                      finish();
+                        logon = true;
+                    } else{
+
+                        System.out.println("我有來3 " + result.getResultCode());
+                        finish();
+                    }
+                }
+            });
+            intentActivityResultLauncher.launch(intent);
         }
 
         setSupportActionBar(binding.toolbar);
@@ -52,15 +73,15 @@ public class AtmActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_LOGIN) {
-            if (resultCode != RESULT_OK) {
-                finish();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_LOGIN) {
+//            if (resultCode != RESULT_OK) {
+//                finish();
+//            }
+//        }
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {
