@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -18,7 +19,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.JavaClass.databinding.ActivityAtmBinding;
 
 public class AtmActivity extends AppCompatActivity {
-Boolean logon = false;
+    private static final int REQUEST_LOGIN = 100;
+    Boolean logon = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityAtmBinding binding;
 
@@ -31,7 +33,7 @@ Boolean logon = false;
 
         if (!logon){
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_LOGIN);
         }
 
         setSupportActionBar(binding.toolbar);
@@ -48,6 +50,16 @@ Boolean logon = false;
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGIN) {
+            if (resultCode != RESULT_OK) {
+                finish();
+            }
+        }
     }
 
     @Override

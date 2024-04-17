@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,7 +26,13 @@ public class LoginActivity extends AppCompatActivity {
         String i_pw = input_passwd.getText().toString();
 
         if ( i_ui.equals("ruby") && i_pw.equals("1234")){
+            Toast.makeText(this,"登入成功",Toast.LENGTH_LONG)
+                    .show();
+            setResult(RESULT_OK);
             finish();
+        }else{
+            Toast.makeText(this,"登入失敗",Toast.LENGTH_LONG)
+                    .show();
         }
     }
     public void cancel(View view){
