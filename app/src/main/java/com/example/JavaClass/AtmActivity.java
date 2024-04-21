@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +27,7 @@ public class AtmActivity extends AppCompatActivity {
     Boolean logon = false;
     private AppBarConfiguration appBarConfiguration;
     private ActivityAtmBinding binding;
+    private ActivityResultLauncher<Intent> requestDataLaunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +36,26 @@ public class AtmActivity extends AppCompatActivity {
         binding = ActivityAtmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (!logon){
+/*        if (!logon){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent,REQUEST_LOGIN);
-        }
+        }*/
+
+        requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+
+
+                if (result.getResultCode() == RESULT_OK){
+                    logon = true;
+                }else{
+                    finish();
+                }
+            }
+        });
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        requestDataLaunch.launch(intent);
 
         setSupportActionBar(binding.toolbar);
 
@@ -52,7 +73,7 @@ public class AtmActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
@@ -60,7 +81,7 @@ public class AtmActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
+    }*/
 
     @Override
     public boolean onSupportNavigateUp() {
