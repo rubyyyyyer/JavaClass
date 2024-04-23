@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.JavaClass.databinding.ActivityAtmBinding;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AtmActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
@@ -35,7 +36,6 @@ public class AtmActivity extends AppCompatActivity {
 
         binding = ActivityAtmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 /*        if (!logon){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent,REQUEST_LOGIN);
