@@ -126,6 +126,6 @@
         android:layout_marginTop="16dp"
         android:text="記住帳號"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintTop_toBottomOf="@+id/input_passwd"
-        tools:layout_editor_absoluteX="32dp" />
+        app:layout_constraintStart_toStartOf="@+id/input_passwd"
+        app:layout_constraintTop_toBottomOf="@+id/input_passwd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

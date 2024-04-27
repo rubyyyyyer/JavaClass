@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private EditText input_userid;
     private EditText input_passwd;
 
@@ -25,6 +27,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSharedPreferences("atm",MODE_PRIVATE)
+                .edit()
+                .putInt("LEVEL",20)
+                .putString("NAME","ruby")
+                .apply();
+
+        int level = getSharedPreferences("atm",MODE_PRIVATE)
+                .getInt("LEVEL",0);
+
+        Log.d(TAG, "onCreate: "+level);
+
         input_userid = findViewById(R.id.input_userid);
         input_passwd = findViewById(R.id.input_passwd);
     }
@@ -38,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String firebasePW = (String) dataSnapshot.getValue();
-//                        System.out.println("我在這:" + firebasePW);
+                        System.out.println("我在這:" + firebasePW);
                         if (i_pw.equals(firebasePW)){
                             Toast.makeText(LoginActivity.this,"登入成功",Toast.LENGTH_LONG)
                                     .show();
@@ -77,6 +90,6 @@ public class LoginActivity extends AppCompatActivity {
         }*/
     }
     public void cancel(View view){
-
+        finish();
     }
 }
