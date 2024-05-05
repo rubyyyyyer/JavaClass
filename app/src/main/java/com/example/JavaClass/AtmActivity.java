@@ -19,9 +19,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.JavaClass.databinding.ActivityAtmBinding;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
 
 public class AtmActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
@@ -29,6 +33,8 @@ public class AtmActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityAtmBinding binding;
     private ActivityResultLauncher<Intent> requestDataLaunch;
+
+    String[] functions = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,20 @@ public class AtmActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+       //Recycler
+        FirstFragment firstFragment = (FirstFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_atm);
+        View firstFragmentView = firstFragment.getView();
+        RecyclerView recyclerView = firstFragmentView.findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        //Adapter
+        FunctionAdapter adapter = new FunctionAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+
     }
 
 /*    @Override
