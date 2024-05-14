@@ -31,16 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-    /*    getSharedPreferences("atm",MODE_PRIVATE)
-                .edit()
-                .putInt("LEVEL",20)
-                .putString("NAME","ruby")
-                .apply();
-
-        int level = getSharedPreferences("atm",MODE_PRIVATE)
-                .getInt("LEVEL",0);
-
-        Log.d(TAG, "onCreate: "+level);*/
 
         input_userid = findViewById(R.id.input_userid);
         input_passwd = findViewById(R.id.input_passwd);
@@ -68,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         String i_ui = input_userid.getText().toString();
         String i_pw = input_passwd.getText().toString();
 
+        //
+//        Intent intent = new Intent(this, AtmActivity.class);
+
+
+
         FirebaseDatabase.getInstance().getReference("users").child(i_ui).child("passwd")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -87,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                                     .putString("userID",i_ui)
                                     .apply();
 
+//                                intent.putExtra("userID",i_ui);
+//                                startActivity(intent);
+
                             }else{
                                 getSharedPreferences("atm",MODE_PRIVATE)
                                         .edit()
@@ -94,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                                         .apply();
                             }
 
-                            Toast.makeText(LoginActivity.this,"登入成功",Toast.LENGTH_LONG)
+                            Toast.makeText(LoginActivity.this,i_ui + " ,登入成功",Toast.LENGTH_LONG)
                                     .show();
                            setResult(RESULT_OK);
                            finish();
@@ -127,9 +125,6 @@ public class LoginActivity extends AppCompatActivity {
                                     })
                                     .show();
 
-
-
-
                         }
                     }
                     @Override
@@ -137,16 +132,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-
-      /*  if ( i_ui.equals("ruby") && i_pw.equals("1234")){
-            Toast.makeText(this,"登入成功",Toast.LENGTH_LONG)
-                    .show();
-            setResult(RESULT_OK);
-            finish();
-        }else{
-            Toast.makeText(this,"登入失敗",Toast.LENGTH_LONG)
-                    .show();
-        }*/
     }
     public void cancel(View view){
         finish();
