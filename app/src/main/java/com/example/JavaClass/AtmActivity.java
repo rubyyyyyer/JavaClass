@@ -15,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import androidx.core.view.WindowCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -79,7 +81,9 @@ public class AtmActivity extends AppCompatActivity {
         });
 
        //Recycler
-        FirstFragment firstFragment = (FirstFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_atm);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_atm);
+        Fragment firstFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+
         View firstFragmentView = firstFragment.getView();
         RecyclerView recyclerView = firstFragmentView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);

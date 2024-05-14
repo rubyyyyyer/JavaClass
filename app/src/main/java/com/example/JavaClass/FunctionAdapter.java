@@ -21,14 +21,16 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.Functi
     @NonNull
     @Override
     public FunctionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_function,parent,false);
 
         return new FunctionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FunctionViewHolder holder, int position) {
-        holder.nameText.setText(functions[position]);
+        if (holder.nameText != null) {
+            holder.nameText.setText(functions[position]);
+        }
     }
 
     @Override
@@ -41,7 +43,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.Functi
         @SuppressLint("ResourceType")
         public FunctionViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameText = itemView.findViewById(android.R.layout.simple_list_item_1);
+            nameText = itemView.findViewById(R.id.text_function_name);
         }
     }
 }
