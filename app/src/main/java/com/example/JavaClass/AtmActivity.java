@@ -1,6 +1,7 @@
 package com.example.JavaClass;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
@@ -25,6 +26,7 @@ public class AtmActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> requestDataLaunch;
 
     private String TAG =AtmActivity.class.getSimpleName() ;
+    String userID ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class AtmActivity extends AppCompatActivity {
         requestDataLaunch.launch(intent);
 
         //Toolbar設定
+       userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
+
         setToolbar();
 
 
@@ -69,7 +74,8 @@ public class AtmActivity extends AppCompatActivity {
         /**設置大標題*/
 //        String userIDS = getIntent().getStringExtra("userID");
 //        Log.d(TAG, userIDS);
-        getSupportActionBar().setTitle("歡迎,Ruby");
+        Log.d(TAG, "我在這" + userID);
+        getSupportActionBar().setTitle("歡迎,"+userID);
         /**設置大標題字體顏色*/
         //Resources.getColor(int id) 已棄用
         //toolbar.setTitleTextColor(getResources().getColor(R.color.blue));
