@@ -1,56 +1,42 @@
 package com.example.JavaClass;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.JavaClass.databinding.ActivityAtmBinding;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.lang.reflect.Array;
 
 public class AtmActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
     Boolean logon = false;
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityAtmBinding binding;
+
     private ActivityResultLauncher<Intent> requestDataLaunch;
 
-    String[] functions = null;
     private String TAG =AtmActivity.class.getSimpleName() ;
+    String userID ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_atm);
 
-        binding = ActivityAtmBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
-      requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+     requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK){
@@ -63,30 +49,17 @@ public class AtmActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         requestDataLaunch.launch(intent);
 
-  /*
 
-
-/*        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.toolbar);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);*/
-
-      /*  binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
         setToolbar();
-    //Recycler
+        //Toolbar設定
 
+
+        //Recycler
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         //Adapter
         FunctionAdapter adapter = new FunctionAdapter(this);
@@ -101,13 +74,10 @@ public class AtmActivity extends AppCompatActivity {
         /**將Toolbar綁定到setSupportActionBar*/
         setSupportActionBar(toolbar);
         /**設置大標題*/
-
-
 //        String userIDS = getIntent().getStringExtra("userID");
-//        Log.d(TAG, userIDS );
-//        getSupportActionBar().setTitle("歡迎,"+ userIDS);
-
-        getSupportActionBar().setTitle("歡迎,Ruby");
+//        Log.d(TAG, userIDS);
+        Log.d(TAG, "我在這" + userID);
+        getSupportActionBar().setTitle("歡迎,"+userID);
         /**設置大標題字體顏色*/
         //Resources.getColor(int id) 已棄用
         //toolbar.setTitleTextColor(getResources().getColor(R.color.blue));
@@ -131,11 +101,17 @@ public class AtmActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-/*    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.toolbar);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }*/
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
+        Log.d(TAG, "onResume: "+userID);
+
+        setToolbar();
+
+
+
+    }
 }

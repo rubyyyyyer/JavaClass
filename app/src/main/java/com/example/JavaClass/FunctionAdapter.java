@@ -38,7 +38,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.Functi
         @SuppressLint("ResourceType")
         public FunctionViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameText = itemView.findViewById(android.R.layout.simple_list_item_1);
+            nameText = itemView.findViewById(android.R.id.text1);
         }
     }
 }
