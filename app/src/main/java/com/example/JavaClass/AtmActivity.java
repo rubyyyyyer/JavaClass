@@ -1,7 +1,7 @@
 package com.example.JavaClass;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 
@@ -9,15 +9,24 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AtmActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
@@ -27,6 +36,7 @@ public class AtmActivity extends AppCompatActivity {
 
     private String TAG =AtmActivity.class.getSimpleName() ;
     String userID ;
+    private List<Function> functions;
 
 
     @Override
@@ -52,20 +62,82 @@ public class AtmActivity extends AppCompatActivity {
 
         userID = getSharedPreferences("atm",MODE_PRIVATE)
                 .getString("userID","");
-        setToolbar();
+
         //Toolbar設定
+        setToolbar();
 
 
-        //Recycler
+/*        //Recycler-Line
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Adapter
-        FunctionAdapter adapter = new FunctionAdapter(this);
+        //Adapter-line
+        FunctionAdapterLine adapter = new FunctionAdapterLine(this);
         recyclerView.setAdapter(adapter);
+        */
+
+        //Recycler-Data
+        functions();
 
 
+        //Recycler-Grid
+        RecyclerView recyclerView =findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+
+        //Adapter-Grid
+        FunctionAdapterGrid adapter = new FunctionAdapterGrid();
+        recyclerView.setAdapter(adapter);
+    }
+
+    //Adapter-Grid-Class
+    public class FunctionAdapterGrid extends RecyclerView.Adapter<FunctionAdapterGrid.FunctionViewHolder>{
+
+        @NonNull
+        @Override
+        public FunctionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = getLayoutInflater().inflate(R.layout.item_icon,parent,false);
+            return new FunctionViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FunctionViewHolder holder, int position) {
+            Function function = functions.get(position);
+            holder.nameText.setText(function.getNameText());
+            holder.iconImg.setImageResource(function.getIconImg());
+        }
+
+        @Override
+        public int getItemCount() {
+            return functions.size();
+        }
+
+        public class FunctionViewHolder extends RecyclerView.ViewHolder{
+            ImageView iconImg ;
+            TextView nameText;
+
+            public FunctionViewHolder(@NonNull View itemView) {
+                super(itemView);
+                iconImg = itemView.findViewById(R.id.item_icon);
+                nameText = itemView.findViewById(R.id.item_text);
+
+
+            }
+        }
+
+    }
+
+
+
+    private void functions() {
+        functions = new ArrayList<>();
+        String[] functionsText =getResources().getStringArray(R.array.functions);
+        functions.add(new Function(functionsText[0], R.drawable.func_transaction));
+        functions.add(new Function(functionsText[1], R.drawable.func_balance));
+        functions.add(new Function(functionsText[2], R.drawable.func_finance));
+        functions.add(new Function(functionsText[3], R.drawable.func_contacts));
+        functions.add(new Function(functionsText[4], R.drawable.func_exit));
     }
 
     private void setToolbar() {
@@ -105,13 +177,12 @@ public class AtmActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //重新抓取登入資料-->使用者名稱
         userID = getSharedPreferences("atm",MODE_PRIVATE)
                 .getString("userID","");
         Log.d(TAG, "onResume: "+userID);
 
+        //Toolbar設定
         setToolbar();
-
-
-
     }
 }
