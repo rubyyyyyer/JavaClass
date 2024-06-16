@@ -27,8 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox chk_rememberID;
     private CheckBox chk_rememberPW;
     private String userID ;
-    private String userPW ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

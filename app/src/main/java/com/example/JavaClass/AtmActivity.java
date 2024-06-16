@@ -28,11 +28,13 @@ public class AtmActivity extends AppCompatActivity {
     private String TAG =AtmActivity.class.getSimpleName() ;
     String userID ;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_atm);
+
+
 
      requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -47,11 +49,11 @@ public class AtmActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         requestDataLaunch.launch(intent);
 
-        //Toolbar設定
-       userID = getSharedPreferences("atm",MODE_PRIVATE)
-                .getString("userID","");
 
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
         setToolbar();
+        //Toolbar設定
 
 
         //Recycler
@@ -99,6 +101,17 @@ public class AtmActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
+        Log.d(TAG, "onResume: "+userID);
+
+        setToolbar();
 
 
+
+    }
 }
