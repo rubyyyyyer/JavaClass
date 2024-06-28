@@ -1,56 +1,52 @@
 package com.example.JavaClass;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.WindowCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.JavaClass.databinding.ActivityAtmBinding;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AtmActivity extends AppCompatActivity {
     private static final int REQUEST_LOGIN = 100;
     Boolean logon = false;
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityAtmBinding binding;
+
     private ActivityResultLauncher<Intent> requestDataLaunch;
 
-    String[] functions = null;
     private String TAG =AtmActivity.class.getSimpleName() ;
+    String userID ;
+    private List<Function> functions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_atm);
 
-        binding = ActivityAtmBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
-      requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+     requestDataLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK){
@@ -63,36 +59,98 @@ public class AtmActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         requestDataLaunch.launch(intent);
 
-  /*
 
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
 
-/*        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.toolbar);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);*/
-
-      /*  binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        //Toolbar設定
         setToolbar();
-    //Recycler
 
+
+/*        //Recycler-Line
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        //Adapter
-        FunctionAdapter adapter = new FunctionAdapter(this);
+        //Adapter-line
+        FunctionAdapterLine adapter = new FunctionAdapterLine(this);
         recyclerView.setAdapter(adapter);
+        */
+
+        //Recycler-Data
+        functions();
 
 
+        //Recycler-Grid
+        RecyclerView recyclerView =findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+
+        //Adapter-Grid
+        FunctionAdapterGrid adapter = new FunctionAdapterGrid();
+        recyclerView.setAdapter(adapter);
+    }
+
+    //Adapter-Grid-Class
+    public class FunctionAdapterGrid extends RecyclerView.Adapter<FunctionAdapterGrid.FunctionViewHolder>{
+
+        @NonNull
+        @Override
+        public FunctionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = getLayoutInflater().inflate(R.layout.item_icon,parent,false);
+            return new FunctionViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FunctionViewHolder holder, int position) {
+            Function function = functions.get(position);
+            holder.nameText.setText(function.getNameText());
+            holder.iconImg.setImageResource(function.getIconImg());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClicked(function);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return functions.size();
+        }
+
+        public class FunctionViewHolder extends RecyclerView.ViewHolder{
+            ImageView iconImg ;
+            TextView nameText;
+
+            public FunctionViewHolder(@NonNull View itemView) {
+                super(itemView);
+                iconImg = itemView.findViewById(R.id.item_icon);
+                nameText = itemView.findViewById(R.id.item_text);
+
+
+            }
+        }
+
+    }
+
+    private void itemClicked(Function function) {
+        Log.d(TAG, "itemClicked(Name): " + function.getNameText() +
+                "\nitemClicked(ImgID): " + function.getIconImg());
+        if (function.getIconImg() == R.drawable.func_exit){
+            finish();
+        }
+    }
+
+
+    private void functions() {
+        functions = new ArrayList<>();
+        String[] functionsText =getResources().getStringArray(R.array.functions);
+        functions.add(new Function(functionsText[0], R.drawable.func_transaction));
+        functions.add(new Function(functionsText[1], R.drawable.func_balance));
+        functions.add(new Function(functionsText[2], R.drawable.func_finance));
+        functions.add(new Function(functionsText[3], R.drawable.func_contacts));
+        functions.add(new Function(functionsText[4], R.drawable.func_exit));
     }
 
     private void setToolbar() {
@@ -101,13 +159,10 @@ public class AtmActivity extends AppCompatActivity {
         /**將Toolbar綁定到setSupportActionBar*/
         setSupportActionBar(toolbar);
         /**設置大標題*/
-
-
 //        String userIDS = getIntent().getStringExtra("userID");
-//        Log.d(TAG, userIDS );
-//        getSupportActionBar().setTitle("歡迎,"+ userIDS);
-
-        getSupportActionBar().setTitle("歡迎,Ruby");
+//        Log.d(TAG, userIDS);
+        Log.d(TAG, "我在這" + userID);
+        getSupportActionBar().setTitle("歡迎,"+userID);
         /**設置大標題字體顏色*/
         //Resources.getColor(int id) 已棄用
         //toolbar.setTitleTextColor(getResources().getColor(R.color.blue));
@@ -131,11 +186,16 @@ public class AtmActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-/*    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.toolbar);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }*/
+        //重新抓取登入資料-->使用者名稱
+        userID = getSharedPreferences("atm",MODE_PRIVATE)
+                .getString("userID","");
+        Log.d(TAG, "onResume: "+userID);
+
+        //Toolbar設定
+        setToolbar();
+    }
 }

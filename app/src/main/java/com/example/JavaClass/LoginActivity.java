@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText input_userid;
     private EditText input_passwd;
     private CheckBox chk_rememberID;
+    private CheckBox chk_rememberPW;
     private String userID ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +37,38 @@ public class LoginActivity extends AppCompatActivity {
 
         String userID = getSharedPreferences("atm",MODE_PRIVATE)
                 .getString("userID","");
+        String userPW = getSharedPreferences("atm",MODE_PRIVATE).
+                getString("userPW","");
 
         input_userid.setText(userID);
+        input_passwd.setText(userPW);
+
         chk_rememberID = findViewById(R.id.chk_rememberID);
+        chk_rememberPW = findViewById(R.id.chk_rememberPW);
+
         chk_rememberID.setChecked(
                 getSharedPreferences("atm",MODE_PRIVATE)
                         .getBoolean("chk_rememberID",false));
+        chk_rememberPW.setChecked(
+                getSharedPreferences("atm",MODE_PRIVATE).
+                getBoolean("chk_rememberPW",false));
+
         chk_rememberID.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 getSharedPreferences("atm",MODE_PRIVATE)
                         .edit()
                         .putBoolean("chk_rememberID",isChecked)
+                        .apply();
+            }
+        });
+
+        chk_rememberPW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                getSharedPreferences("atm",MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("chk_rememberPW",isChecked)
                         .apply();
             }
         });
@@ -68,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String firebasePW = (String) dataSnapshot.getValue();
+                        String firebaseID = (String) dataSnapshot.getValue();
 //                        System.out.println("我在這:" + firebasePW);
                         boolean chk_rememberID;
 
@@ -80,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                             getSharedPreferences("atm",MODE_PRIVATE)
                                     .edit()
                                     .putString("userID",i_ui)
+                                    .putString("userPW",i_pw)
                                     .apply();
 
 //                                intent.putExtra("userID",i_ui);
@@ -89,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                 getSharedPreferences("atm",MODE_PRIVATE)
                                         .edit()
                                         .putString("userID","")
+                                        .putString("userPW","")
                                         .apply();
                             }
 

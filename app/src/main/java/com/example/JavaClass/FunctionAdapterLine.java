@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.FunctionViewHolder> {
+public class FunctionAdapterLine extends RecyclerView.Adapter<FunctionAdapterLine.FunctionViewHolder> {
     private final String[] functions;
     Context context;
-    public  FunctionAdapter(Context context){
+    public FunctionAdapterLine(Context context){
          this.context = context;
          functions = context.getResources().getStringArray(R.array.functions);
     }
@@ -38,7 +38,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.Functi
         @SuppressLint("ResourceType")
         public FunctionViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameText = itemView.findViewById(android.R.layout.simple_list_item_1);
+            nameText = itemView.findViewById(android.R.id.text1);
         }
     }
 }
