@@ -106,6 +106,12 @@ public class AtmActivity extends AppCompatActivity {
             Function function = functions.get(position);
             holder.nameText.setText(function.getNameText());
             holder.iconImg.setImageResource(function.getIconImg());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClicked(function);
+                }
+            });
         }
 
         @Override
@@ -128,6 +134,13 @@ public class AtmActivity extends AppCompatActivity {
 
     }
 
+    private void itemClicked(Function function) {
+        Log.d(TAG, "itemClicked(Name): " + function.getNameText() +
+                "\nitemClicked(ImgID): " + function.getIconImg());
+        if (function.getIconImg() == R.drawable.func_exit){
+            finish();
+        }
+    }
 
 
     private void functions() {
